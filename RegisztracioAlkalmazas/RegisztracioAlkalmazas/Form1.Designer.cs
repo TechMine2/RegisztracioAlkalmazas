@@ -120,10 +120,6 @@
             // 
             this.lbHobbik.FormattingEnabled = true;
             this.lbHobbik.ItemHeight = 20;
-            this.lbHobbik.Items.AddRange(new object[] {
-            "Úszás",
-            "Horgászat",
-            "Futás"});
             this.lbHobbik.Location = new System.Drawing.Point(349, 41);
             this.lbHobbik.Name = "lbHobbik";
             this.lbHobbik.Size = new System.Drawing.Size(117, 144);
@@ -176,6 +172,7 @@
             this.btnBetoltes.TabIndex = 13;
             this.btnBetoltes.Text = "Betöltés";
             this.btnBetoltes.UseVisualStyleBackColor = true;
+            this.btnBetoltes.Click += new System.EventHandler(this.btnBetoltes_Click);
             // 
             // FormMain
             // 
