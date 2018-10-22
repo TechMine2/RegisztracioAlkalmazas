@@ -120,6 +120,10 @@
             // 
             this.lbHobbik.FormattingEnabled = true;
             this.lbHobbik.ItemHeight = 20;
+            this.lbHobbik.Items.AddRange(new object[] {
+            "Úszás",
+            "Horgászat",
+            "Futás"});
             this.lbHobbik.Location = new System.Drawing.Point(349, 41);
             this.lbHobbik.Name = "lbHobbik";
             this.lbHobbik.Size = new System.Drawing.Size(117, 144);
@@ -150,6 +154,7 @@
             this.btnUjHobbiAd.TabIndex = 11;
             this.btnUjHobbiAd.Text = "Hozzáad";
             this.btnUjHobbiAd.UseVisualStyleBackColor = true;
+            this.btnUjHobbiAd.Click += new System.EventHandler(this.btnUjHobbiAd_Click);
             // 
             // btnMentes
             // 
@@ -160,6 +165,7 @@
             this.btnMentes.TabIndex = 12;
             this.btnMentes.Text = "Mentés";
             this.btnMentes.UseVisualStyleBackColor = true;
+            this.btnMentes.Click += new System.EventHandler(this.btnMentes_Click);
             // 
             // btnBetoltes
             // 
