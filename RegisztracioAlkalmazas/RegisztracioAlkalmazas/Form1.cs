@@ -37,7 +37,7 @@ namespace RegisztracioAlkalmazas
             }
             else
             {
-                MessageBox.Show("Nem adtál meg új hobbit.", "Hiba");
+                MessageBox.Show("Nem adtál meg értéket a hobbi felvételéhez.", "Hiba");
             }
         }
 
@@ -90,48 +90,40 @@ namespace RegisztracioAlkalmazas
             }
             else
             {
-                string nincsKitoltve = "Nem adtál meg ";
-                bool voltEMarHiba = false;
+                List<string> hianyok = new List<string>();
                 if (tbNev.Text.ToString() == "")
                 {
-                    nincsKitoltve += "nevet";
-                    voltEMarHiba = true;
+                    hianyok.Add("a nevet");
                 }
                 if (dtpSzulDatum.Value.ToString() == szulDat)
                 {
-                    if (voltEMarHiba==true)
-                    {
-                        nincsKitoltve += ", születési dátumot";
-                    }
-                    else
-                    {
-                        nincsKitoltve += "születési dátumot";
-                    }
-                    voltEMarHiba = true;
+                    hianyok.Add("a születési dátumot");
                 }
                 if (rbFerfi.Checked == false && rbNo.Checked == false)
                 {
-                    if (voltEMarHiba == true)
-                    {
-                        nincsKitoltve += ", nemet";
-                    }
-                    else
-                    {
-                        nincsKitoltve += "nemet";
-                    }
-                    voltEMarHiba = true;
+                    hianyok.Add("a nemet");
                 }
                 if (lbHobbik.SelectedItem == null)
                 {
-                    if (voltEMarHiba==true)
-                    {
-                        nincsKitoltve += ", hobbit";
-                    }
-                    else
-                    {
-                        nincsKitoltve += " hobbit";
-                    }
+                    hianyok.Add("a hobbit");
                 }
+
+                string nincsKitoltve = "Nem adtad meg ";
+
+                nincsKitoltve += hianyok[0];
+                if (hianyok.Count > 2)
+                {
+                    for (int i = 1; i < hianyok.Count - 1; i++)
+                    {
+                        nincsKitoltve += ", " + hianyok[i];
+                    }
+                    nincsKitoltve += " és " + hianyok[hianyok.Count-1];
+                }
+                else if (hianyok.Count==2)
+                {
+                    nincsKitoltve += " és " + hianyok[1];
+                }
+                
                 MessageBox.Show(nincsKitoltve + ".", "Hiba");
             }
         }
