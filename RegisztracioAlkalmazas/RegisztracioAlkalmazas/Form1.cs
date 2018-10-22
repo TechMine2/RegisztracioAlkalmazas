@@ -135,7 +135,6 @@ namespace RegisztracioAlkalmazas
                 {
                     nincsKitoltve += " és " + hianyok[1];
                 }
-
                 MessageBox.Show(nincsKitoltve + ".", "Hiba");
             }
         }
@@ -144,6 +143,10 @@ namespace RegisztracioAlkalmazas
         {
             //komponens értékek nullázása
             lbHobbik.Items.Clear();
+            rbFerfi.Checked = false;
+            rbNo.Checked = false;
+            tbNev.Text = "";
+            dtpSzulDatum.Value = DateTime.Now;
             //Betöltés
             List<string> adatok = new List<string>();
             try
@@ -157,49 +160,36 @@ namespace RegisztracioAlkalmazas
                 }
                 beolvas.Close();
 
-                //BETÖLTÖTT ÉRTÉKEK FELDOLGOZHATÓVÁ TÉTELE
-                //Első szóközök törlése
-                for (int i = 0; i < adatok.Count; i++)
-                {
-                    string seged = "";
-                    for (int j = 1; j < adatok[i].Length; j++)
-                    {
-                        seged += adatok[i][j];
-                    }
-                    adatok[i] = seged;
-                }
-
-
+                //BETÖLTÖTT ÉRTÉKEK FELDOLGOZÁSA
                 //név
-                tbNev.Text = adatok[0];
+                tbNev.Text = CsakEgyKarakterKihagyo(adatok[0], ' ', 0);
                 //dátum
                 adatok[1] = KarakterKihagyo(adatok[1], ' ');
                 dtpSzulDatum.Value = DateTime.Parse(adatok[1]);
                 //nem
+                adatok[2] = CsakEgyKarakterKihagyo(adatok[2], ' ', 0);
                 if (adatok[2] == "Férfi")
                 {
                     rbFerfi.Checked = true;
                 }
-                else
+                else if (adatok[2] == "Nő")
                 {
                     rbNo.Checked = true;
                 }
                 //hobbik
-                adatok[3] = KarakterKihagyo(adatok[3], ' ');
                 string[] hobbik = adatok[3].Split(',');
                 for (int i = 0; i < hobbik.Length; i++)
                 {
+                    hobbik[i] = CsakEgyKarakterKihagyo(hobbik[i], ' ', 0);
                     lbHobbik.Items.Add(hobbik[i]);
                 }
                 //kedvenchobbi
-                lbHobbik.SelectedItem = adatok[4];
-
+                lbHobbik.SelectedItem = CsakEgyKarakterKihagyo(adatok[4], ' ', 0);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Hiba: " + ex, "Hiba");
             }
-
         }
 
         public string KarakterKihagyo(string ebben, char ezt)
@@ -213,7 +203,26 @@ namespace RegisztracioAlkalmazas
                     visszaAd += ebben[i];
                 }
             }
+            return visszaAd;
+        }
 
+        public string CsakEgyKarakterKihagyo(string ebben, char ezt, int itt)
+        {
+            string visszaAd = "";
+            if (ebben[itt] == ezt)
+            {
+                for (int i = 0; i < ebben.Length; i++)
+                {
+                    if (i != itt)
+                    {
+                        visszaAd += ebben[i];
+                    }
+                }
+            }
+            else
+            {
+                visszaAd += ebben;
+            }
             return visszaAd;
         }
 
