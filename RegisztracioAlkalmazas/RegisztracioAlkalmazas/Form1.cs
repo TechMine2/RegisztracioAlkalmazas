@@ -31,13 +31,13 @@ namespace RegisztracioAlkalmazas
                 }
                 else
                 {
-                    MessageBox.Show("Már létezik ilyen hobbi.");
+                    MessageBox.Show("Már létezik ilyen hobbi.", "Hiba");
                 }
 
             }
             else
             {
-                MessageBox.Show("Nem adtál meg új hobbit.");
+                MessageBox.Show("Nem adtál meg új hobbit.", "Hiba");
             }
         }
 
@@ -90,7 +90,49 @@ namespace RegisztracioAlkalmazas
             }
             else
             {
-                MessageBox.Show("Valami nincs kitöltve.");
+                string nincsKitoltve = "Nem adtál meg ";
+                bool voltEMarHiba = false;
+                if (tbNev.Text.ToString() == "")
+                {
+                    nincsKitoltve += "nevet";
+                    voltEMarHiba = true;
+                }
+                if (dtpSzulDatum.Value.ToString() == szulDat)
+                {
+                    if (voltEMarHiba==true)
+                    {
+                        nincsKitoltve += ", születési dátumot";
+                    }
+                    else
+                    {
+                        nincsKitoltve += "születési dátumot";
+                    }
+                    voltEMarHiba = true;
+                }
+                if (rbFerfi.Checked == false && rbNo.Checked == false)
+                {
+                    if (voltEMarHiba == true)
+                    {
+                        nincsKitoltve += ", nemet";
+                    }
+                    else
+                    {
+                        nincsKitoltve += "nemet";
+                    }
+                    voltEMarHiba = true;
+                }
+                if (lbHobbik.SelectedItem == null)
+                {
+                    if (voltEMarHiba==true)
+                    {
+                        nincsKitoltve += ", hobbit";
+                    }
+                    else
+                    {
+                        nincsKitoltve += " hobbit";
+                    }
+                }
+                MessageBox.Show(nincsKitoltve + ".", "Hiba");
             }
         }
     }
