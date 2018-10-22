@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -58,35 +59,46 @@ namespace RegisztracioAlkalmazas
 
         private void btnMentes_Click(object sender, EventArgs e)
         {
-            string tesztMentes = "";
+            string adatMentes = "";
             if (tbNev.Text.ToString() != "" && dtpSzulDatum.Value.ToString() != szulDat && (rbFerfi.Checked == true || rbNo.Checked == true) && lbHobbik.SelectedItem != null)
             {
-                tesztMentes += "Név: " + tbNev.Text.ToString() + "\nSzületési dátum:";
+                adatMentes += "Név: " + tbNev.Text.ToString() + "\nSzületési dátum:";
                 string[] adat = dtpSzulDatum.Value.ToString().Split(' ');
 
                 for (int i = 0; i < 3; i++)
                 {
-                    tesztMentes += " " + adat[i];
+                    adatMentes += " " + adat[i];
                 }
-                tesztMentes += "\nNem: ";
+                adatMentes += "\nNem: ";
                 if (rbFerfi.Checked == true)
                 {
-                    tesztMentes += "Férfi";
+                    adatMentes += "Férfi";
                 }
                 else
                 {
-                    tesztMentes += "Nő";
+                    adatMentes += "Nő";
                 }
                 if (lbHobbik.Items.Count > 1)
                 {
-                    tesztMentes += "\nHobbik: " + lbHobbik.Items[0];
+                    adatMentes += "\nHobbik: " + lbHobbik.Items[0];
                     for (int i = 1; i < lbHobbik.Items.Count; i++)
                     {
-                        tesztMentes += ", " + lbHobbik.Items[i];
+                        adatMentes += ", " + lbHobbik.Items[i];
                     }
                 }
-                tesztMentes += "\nKedvenc hobbi: " + lbHobbik.SelectedItem.ToString();
-                MessageBox.Show("Sikeres mentés!\n" + tesztMentes);
+                adatMentes += "\nKedvenc hobbi: " + lbHobbik.SelectedItem.ToString();
+
+                try
+                {
+                    StreamWriter kiir = new StreamWriter("reg_adatok.txt");
+                    kiir.WriteLine(adatMentes);
+                    kiir.Close();
+                    MessageBox.Show("Sikeres mentés!\n");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Hiba: " + ex);
+                }
             }
             else
             {
