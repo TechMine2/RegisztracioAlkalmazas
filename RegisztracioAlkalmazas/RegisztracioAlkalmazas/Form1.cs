@@ -202,8 +202,18 @@ namespace RegisztracioAlkalmazas
                     while (!beolvas.EndOfStream)
                     {
                         string sor = beolvas.ReadLine();
-                        string[] adat = sor.Split(':');
-                        adatok.Add(adat[1]);
+                        try
+                        {
+                            string[] adat = sor.Split(':');
+                            adatok.Add(adat[1]);
+                        }
+                        catch (Exception ex)
+                        {
+                            //MessageBox.Show("" + ex, "Hiba");
+                            MessageBox.Show("Nem betölthető fájl!", "Hiba");
+                            return;
+                        }
+
                     }
                     beolvas.Close();
 
@@ -222,6 +232,9 @@ namespace RegisztracioAlkalmazas
                     else if (adatok[2] == "Nő")
                     {
                         rbNo.Checked = true;
+                    }else
+                    {
+                        MessageBox.Show("Érvénytelen nem.", "Hiba");
                     }
                     //hobbik
                     string[] hobbik = adatok[3].Split(',');
