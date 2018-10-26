@@ -42,6 +42,8 @@
             this.btnUjHobbiAd = new System.Windows.Forms.Button();
             this.btnMentes = new System.Windows.Forms.Button();
             this.btnBetoltes = new System.Windows.Forms.Button();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.SuspendLayout();
             // 
             // lblNev
@@ -174,6 +176,15 @@
             this.btnBetoltes.UseVisualStyleBackColor = true;
             this.btnBetoltes.Click += new System.EventHandler(this.btnBetoltes_Click);
             // 
+            // openFileDialog
+            // 
+            this.openFileDialog.Filter = "Szöveges fájlok|*.dat;*.txt;*.wri;*.lpr;*.kst;*.doc;*.rtf;*.pdf;*.htm;*.html;*.ps" +
+    ";*.lit;*.chm;*.hlp;*.odt;*.diz;*.sgf|Minden fájl|*.*";
+            // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.Filter = "Szöveges fájlok|*.txt";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -216,6 +227,8 @@
         private System.Windows.Forms.Button btnUjHobbiAd;
         private System.Windows.Forms.Button btnMentes;
         private System.Windows.Forms.Button btnBetoltes;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
     }
 }
 

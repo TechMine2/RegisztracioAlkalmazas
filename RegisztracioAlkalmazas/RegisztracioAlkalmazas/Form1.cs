@@ -59,6 +59,50 @@ namespace RegisztracioAlkalmazas
 
         private void btnMentes_Click(object sender, EventArgs e)
         {
+            Mentes();
+        }
+
+        private void btnBetoltes_Click(object sender, EventArgs e)
+        {
+            Megnyitas();
+        }
+
+        public string KarakterKihagyo(string ebben, char ezt)
+        {
+            string visszaAd = "";
+
+            for (int i = 0; i < ebben.Length; i++)
+            {
+                if (ebben[i] != ezt)
+                {
+                    visszaAd += ebben[i];
+                }
+            }
+            return visszaAd;
+        }
+
+        public string CsakEgyKarakterKihagyo(string ebben, char ezt, int itt)
+        {
+            string visszaAd = "";
+            if (ebben[itt] == ezt)
+            {
+                for (int i = 0; i < ebben.Length; i++)
+                {
+                    if (i != itt)
+                    {
+                        visszaAd += ebben[i];
+                    }
+                }
+            }
+            else
+            {
+                visszaAd += ebben;
+            }
+            return visszaAd;
+        }
+
+        public void Mentes()
+        {
             string adatMentes = "";
             if (tbNev.Text.ToString() != "" && dtpSzulDatum.Value.ToString() != szulDat && (rbFerfi.Checked == true || rbNo.Checked == true) && lbHobbik.SelectedItem != null)
             {
@@ -90,10 +134,11 @@ namespace RegisztracioAlkalmazas
 
                 try
                 {
-                    StreamWriter kiir = new StreamWriter("reg_adatok.txt");
-                    kiir.WriteLine(adatMentes);
-                    kiir.Close();
-                    MessageBox.Show("Sikeres mentés!\n");
+                    if (saveFileDialog.ShowDialog(this)==DialogResult.OK)
+                    {
+                        File.WriteAllText(saveFileDialog.FileName, adatMentes);
+                        MessageBox.Show("Sikeres mentés!\n");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -139,91 +184,60 @@ namespace RegisztracioAlkalmazas
             }
         }
 
-        private void btnBetoltes_Click(object sender, EventArgs e)
+        public void Megnyitas()
         {
-            //komponens értékek nullázása
-            lbHobbik.Items.Clear();
-            rbFerfi.Checked = false;
-            rbNo.Checked = false;
-            tbNev.Text = "";
-            dtpSzulDatum.Value = DateTime.Now;
-            //Betöltés
-            List<string> adatok = new List<string>();
-            try
+            if (openFileDialog.ShowDialog(this) == DialogResult.OK)
             {
-                StreamReader beolvas = new StreamReader("reg_adatok.txt");
-                while (!beolvas.EndOfStream)
+                //komponens értékek nullázása
+                lbHobbik.Items.Clear();
+                rbFerfi.Checked = false;
+                rbNo.Checked = false;
+                tbNev.Text = "";
+                dtpSzulDatum.Value = DateTime.Now;
+                //Betöltés
+                List<string> adatok = new List<string>();
+                try
                 {
-                    string sor = beolvas.ReadLine();
-                    string[] adat = sor.Split(':');
-                    adatok.Add(adat[1]);
-                }
-                beolvas.Close();
-
-                //BETÖLTÖTT ÉRTÉKEK FELDOLGOZÁSA
-                //név
-                tbNev.Text = CsakEgyKarakterKihagyo(adatok[0], ' ', 0);
-                //dátum
-                adatok[1] = KarakterKihagyo(adatok[1], ' ');
-                dtpSzulDatum.Value = DateTime.Parse(adatok[1]);
-                //nem
-                adatok[2] = CsakEgyKarakterKihagyo(adatok[2], ' ', 0);
-                if (adatok[2] == "Férfi")
-                {
-                    rbFerfi.Checked = true;
-                }
-                else if (adatok[2] == "Nő")
-                {
-                    rbNo.Checked = true;
-                }
-                //hobbik
-                string[] hobbik = adatok[3].Split(',');
-                for (int i = 0; i < hobbik.Length; i++)
-                {
-                    hobbik[i] = CsakEgyKarakterKihagyo(hobbik[i], ' ', 0);
-                    lbHobbik.Items.Add(hobbik[i]);
-                }
-                //kedvenchobbi
-                lbHobbik.SelectedItem = CsakEgyKarakterKihagyo(adatok[4], ' ', 0);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Hiba: " + ex, "Hiba");
-            }
-        }
-
-        public string KarakterKihagyo(string ebben, char ezt)
-        {
-            string visszaAd = "";
-
-            for (int i = 0; i < ebben.Length; i++)
-            {
-                if (ebben[i] != ezt)
-                {
-                    visszaAd += ebben[i];
-                }
-            }
-            return visszaAd;
-        }
-
-        public string CsakEgyKarakterKihagyo(string ebben, char ezt, int itt)
-        {
-            string visszaAd = "";
-            if (ebben[itt] == ezt)
-            {
-                for (int i = 0; i < ebben.Length; i++)
-                {
-                    if (i != itt)
+                    StreamReader beolvas = new StreamReader(openFileDialog.FileName);
+                    while (!beolvas.EndOfStream)
                     {
-                        visszaAd += ebben[i];
+                        string sor = beolvas.ReadLine();
+                        string[] adat = sor.Split(':');
+                        adatok.Add(adat[1]);
                     }
+                    beolvas.Close();
+
+                    //BETÖLTÖTT ÉRTÉKEK FELDOLGOZÁSA
+                    //név
+                    tbNev.Text = CsakEgyKarakterKihagyo(adatok[0], ' ', 0);
+                    //dátum
+                    adatok[1] = KarakterKihagyo(adatok[1], ' ');
+                    dtpSzulDatum.Value = DateTime.Parse(adatok[1]);
+                    //nem
+                    adatok[2] = CsakEgyKarakterKihagyo(adatok[2], ' ', 0);
+                    if (adatok[2] == "Férfi")
+                    {
+                        rbFerfi.Checked = true;
+                    }
+                    else if (adatok[2] == "Nő")
+                    {
+                        rbNo.Checked = true;
+                    }
+                    //hobbik
+                    string[] hobbik = adatok[3].Split(',');
+                    for (int i = 0; i < hobbik.Length; i++)
+                    {
+                        hobbik[i] = CsakEgyKarakterKihagyo(hobbik[i], ' ', 0);
+                        lbHobbik.Items.Add(hobbik[i]);
+                    }
+                    //kedvenchobbi
+                    lbHobbik.SelectedItem = CsakEgyKarakterKihagyo(adatok[4], ' ', 0);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Hiba: " + ex, "Hiba");
                 }
             }
-            else
-            {
-                visszaAd += ebben;
-            }
-            return visszaAd;
         }
 
     }
